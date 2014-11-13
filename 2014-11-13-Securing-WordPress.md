@@ -18,3 +18,9 @@ You should be able to deploy your code from the command line with a single comma
 
 ##### Keep Your Full WordPress Install in Source Control
 In the past we used to only use source control for versioning our theme. After having a few bad experiences, we now version the entire WordPress install, which includes plugins and themes. This way, if a site is ever comprimised or you suspect a malicious user has somehow edited core WordPress files, a simple one-line deploy will reset everything back to how it should be. This also gives the developer full control over the plugins used on the site, allowing you to keep them up-to-date as needed.
+
+##### Enforce Password Strengh
+This seems like a basic one, but weak passwords are often the easiest way for malicious users to gain access to your site. Using a plugin like [Force Strong Passwords](https://wordpress.org/plugins/force-strong-passwords/) will help avoid a situation where a user uses a weak password like "_password123_".
+
+##### Errbit
+Malicious attacks on your WordPress install will often generate errors.
