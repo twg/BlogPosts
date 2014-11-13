@@ -7,10 +7,10 @@ Due to it’s popularity and the poor quality of many plugins and themes, WordPr
 ##### Disable File Modifications
 By default, WordPress admin users can edit PHP files and install any plugin they want. Giving users these abilities is often unnecessary and dangerous. One of the first things you can do is edit your wp-config.php file and add `define('DISALLOW_FILE_MODS', true);`. This will prevent users from installing plugins or editing themes, and will also hide the UI elements associated with these actions. Editing themes to add malicious code is a very common attack vector.
 
-#####Remove Unused Themes
+##### Remove Unused Themes
 There is no reason too keep unused themes around. Remove them to ensure that there is no way for malicious users to take advantage of known exploits.
 
-#####Remove Unused Plugins
+##### Remove Unused Plugins
 The same goes for plugins. Remove anything you are not using and take a few minutes to Google around for known exploits of the plugins you are using. It's worth taking a few minutes to look through the pull request history of the [MetaSploit Github repo](https://github.com/rapid7/metasploit-framework/pulls?q=is%3Apr+wordpress+is%3Aclosed) to see if there are any known security issues.
 
 ##### Setup Professional Deployments
@@ -23,4 +23,4 @@ In the past we used to only use source control for versioning our theme. After h
 This seems like a basic one, but weak passwords are often the easiest way for malicious users to gain access to your site. Using a plugin like [Force Strong Passwords](https://wordpress.org/plugins/force-strong-passwords/) will help avoid a situation where a user uses a weak password like "_password123_".
 
 ##### Errbit
-Malicious attacks on your WordPress install will often generate errors.
+Malicious attacks on your WordPress install will often generate errors. Using [Airbrake](https://airbrake.io/) or [Errbit](https://github.com/errbit/errbit) to catch errors will allow you to have better insights into your deployment, but will also alert you to any suspicicous errors that occur. The easiest way to get this working is to use [Errbit-PHP](https://github.com/flippa/errbit-php).
