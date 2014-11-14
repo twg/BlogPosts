@@ -24,3 +24,14 @@ This seems like a basic one, but weak passwords are often the easiest way for ma
 
 ##### Errbit
 Malicious attacks on your WordPress install will often generate errors. Using [Airbrake](https://airbrake.io/) or [Errbit](https://github.com/errbit/errbit) to catch errors will allow you to have better insights into your deployment, but will also alert you to any suspicicous errors that occur. The easiest way to get this working is to use [Errbit-PHP](https://github.com/flippa/errbit-php).
+
+##### Restrict Sensative Folders
+Deployments often involve pulling a Github repoistory down and symlinking sensative configuration folders. Most deployments involve symlinking logs and config folders, but since WordPress does not have any notion of a public folder, Capistrano or some hosts may end up symlinking these sensative folders into a publiclially asseccible location. Ensure that you cannot access these folders and also make sure that any `.git` folders are restricted as well.
+
+##### Fail2Ban
+The best way to stop brute force attacks on your WordPress install is to add Fail2Ban, which blocks IP's that make clusters of failed requests. To get things setup, you'll need to:
+
+1. Install Fail2Ban on your Linux install
+2. Install the simple [WP Fail2Ban Plugin](https://wordpress.org/plugins/wp-fail2ban/)
+3. Ensure that Fail2Ban is writing to your syslog when you make failed login requests _(most often in `/var/logs/auth.log`)_
+4. Copy over the files mentioned in the [WP Fail2Ban installation instructions](https://wordpress.org/plugins/wp-fail2ban/installation/) and update your `jail.local` file accordingly.
