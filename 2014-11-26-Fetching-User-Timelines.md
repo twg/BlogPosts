@@ -16,35 +16,28 @@ It turned out to be a fairly simple task thanks to the awesome [Twitter gem](htt
 
 ```ruby
 require 'twitter'
- 
-CONFIG = {
-  consumer_key:        "YOUR_CONSUMER_KEY",
-  consumer_secret:     "YOUR_CONSUMER_SERCRET",
-  access_token:        "YOUR_ACCESS_TOKEN",
-  access_token_secret: "YOUR_ACCESS_TOKEN_SECRET"
-}
- 
+
 class AllTweets
- 
+
   attr_accessor :tweets
- 
-  def initialize(username)
+
+  def initialize(username, config)
     @username = username
+    @config = config
     @tweets = []
     @max_id = nil
-    self.get_tweets
   end
- 
+
   def client
     Twitter::REST::Client.new do |config|
-      config.consumer_key        = CONFIG[:consumer_key]
-      config.consumer_secret     = CONFIG[:consumer_secret]
-      config.access_token        = CONFIG[:access_token]
-      config.access_token_secret = CONFIG[:access_token_secret]
+      config.consumer_key        = @config[:consumer_key]
+      config.consumer_secret     = @config[:consumer_secret]
+      config.access_token        = @config[:access_token]
+      config.access_token_secret = @config[:access_token_secret]
     end
   end
- 
-  def get_tweets
+
+  def fetch
     options = {count: 200}
     options[:max_id] = @max_id if @max_id
     fetched_tweets = client.user_timeline(@username, options)
@@ -54,18 +47,29 @@ class AllTweets
       end
       @tweets.push(tweet.attrs.to_json)
     end
- 
+
     if fetched_tweets.length == 0
       puts "Done, fetched #{@tweets.length} tweets"
       return @tweets
     else
       puts "Tweet Count: #{@tweets.length}"
-      get_tweets
+      fetch
     end
   end
- 
+
 end
- 
-AllTweets.new('twg').tweets
+
+
+#-- Usage -------------------------------------------------
+config = {
+  consumer_key:        "YOUR_CONSUMER_KEY",
+  consumer_secret:     "YOUR_CONSUMER_SECRET",
+  access_token:        "YOUR_ACCESS_TOKEN",
+  access_token_secret: "YOUR_ACCESS_TOKEN_SECRET"
+}
+all_tweets = AllTweets.new('twg', config)
+all_tweets.fetch
+
+all_tweets.tweets
 #=> Returns an array of ~3200 JSON encoded tweets
 ```
