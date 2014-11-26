@@ -9,8 +9,8 @@ It turned out to be a fairly simple task thanks to the awesome [Twitter gem](htt
 * Twitter only allows you to pull down approximately 3200 tweets
 * You'll need to visit [apps.twitter.com](https://apps.twitter.com/) and get your credentials setup
 * This code returns an array of JSON encoded tweets (`tweet.attrs.to_json`) 
-* We are not considering the API limitations of Twitter, but this could be easily adapted using the example outlined [here](https://github.com/sferik/twitter/blob/master/examples/AllTweets.md)
-* Feel free to comment or contribute to the Gist posted [here](https://github.com/sferik/twitter/blob/763eaf69fcd158f83fc838c5ebe0306e6937e4bc/examples/RateLimiting.md)
+* We are not considering the API limitations of Twitter, but this could be easily adapted using the example outlined [here](https://github.com/sferik/twitter/blob/master/examples/RateLimiting.md)
+* Feel free to comment or contribute to the Gist posted [here](https://gist.github.com/Emerson/c7d1638c2525464d3275)
 
 ### The Code
 
