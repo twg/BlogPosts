@@ -1,6 +1,6 @@
 # Pulling Down a User's Twitter Feed
 
-On a recent project we needed to create a news feed that mixed our client's blog posts, twitter feed, and instagram posts into one unified timeline. After building out the timeline feature, I realized that we still needed to import our client's historical Twitter data – something that I've never done before.
+On a recent project we needed to create a news feed that mixed our client's blog posts, Twitter feed, and Instagram posts into one unified timeline. After building out the timeline feature, I realized that we still needed to import our client's historical Twitter data – something that I've never done before.
 
 It turned out to be a fairly simple task thanks to the awesome [Twitter gem](https://github.com/sferik/twitter), but I thought I would document it here anyway in the hopes that it could save another developer time.
 
