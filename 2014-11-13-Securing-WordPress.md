@@ -11,7 +11,7 @@ By default, WordPress admin users can edit PHP files and install any plugin they
 There is no reason too keep unused themes around. Remove them to ensure that there is no way for malicious users to take advantage of known exploits.
 
 ##### Remove Unused Plugins
-The same goes for plugins. Remove anything you are not using and take a few minutes to Google around for known exploits of the plugins you are using. It's worth taking a few minutes to look through the pull request history of the [MetaSploit Github repo](https://github.com/rapid7/metasploit-framework/pulls?q=is%3Apr+wordpress+is%3Aclosed) to see if there are any known security issues.
+The same goes for plugins. Remove anything you are not using and take a few minutes to Google around for known exploits of the plugins you are using. It's worth taking a few minutes to look through the pull request history of the [MetaSploit Github repo](https://github.com/rapid7/metasploit-framework/pulls?q=is%3Apr+wordpress+is%3Aclosed) to see if there are any known security issues with your plugins.
 
 ##### Setup Professional Deployments
 You should be able to deploy your code from the command line with a single command. We've used [Capistrano](http://capistranorb.com/) with great success, and have more recently followed the techniques outlined in EngineYard's "[WordPress in the Cloud](https://blog.engineyard.com/2014/wordpress-in-the-cloud-part-1)" blog posts.
