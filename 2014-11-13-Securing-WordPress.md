@@ -2,9 +2,7 @@ _Authored by [Bill Li](https://github.com/billxinli) and [Emerson Lackey](https:
 
 _**Note:** The target audience for this article is someone that is comfortable with Linux, WordPress, and does not want to rely on plugins to manage security._
 
-Due to it's popularity and the poor quality of many plugins and themes, WordPress has become a common and easy target for malicious users. We have learned some of these lessons first hand and felt it would be worth sharing our findings with the community.
-
-# Lock Down - The Basics
+Due to it's popularity and the poor quality of many plugins and themes, WordPress has become a common and easy target for malicious users. We have learned some of these lessons first hand and felt it would be worth sharing our findings with the community. Here are a few of the basic things you can do to start securing your WordPress install:
 
 ##### Disable File Modifications
 By default, WordPress admin users can edit PHP files and install any plugin they want. Giving users these abilities is often unnecessary and dangerous. One of the first things you can do is edit your wp-config.php file and add `define('DISALLOW_FILE_MODS', true);`. This will prevent users from installing plugins or editing themes, and will also hide the UI elements associated with these actions. Editing themes to add malicious code is a very common attack vector.
