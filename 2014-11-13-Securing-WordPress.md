@@ -1,8 +1,10 @@
-_The target audience for this article is someone that is comfortable with Linux, WordPress, and does not want to rely on plugins to manage security._
+_Authored by [Bill Li](https://github.com/billxinli) and [Emerson Lackey](https://github.com/Emerson), feel free to add your thoughts over at [Github](https://github.com/twg/BlogPosts/blob/master/2014-11-13-Securing-WordPress.md)_
+
+_**Note:** The target audience for this article is someone that is comfortable with Linux, WordPress, and does not want to rely on plugins to manage security._
 
 Due to it's popularity and the poor quality of many plugins and themes, WordPress has become a common and easy target for malicious users. We have learned some of these lessons first hand and felt it would be worth sharing our findings with the community.
 
-# LockDown - The Basics
+# Lock Down - The Basics
 
 ##### Disable File Modifications
 By default, WordPress admin users can edit PHP files and install any plugin they want. Giving users these abilities is often unnecessary and dangerous. One of the first things you can do is edit your wp-config.php file and add `define('DISALLOW_FILE_MODS', true);`. This will prevent users from installing plugins or editing themes, and will also hide the UI elements associated with these actions. Editing themes to add malicious code is a very common attack vector.
@@ -23,7 +25,7 @@ In the past we used to only keep our themes in version control. After having a f
 Malicious attacks on your WordPress install will often generate errors. Using [Airbrake](https://airbrake.io/) or [Errbit](https://github.com/errbit/errbit) to catch errors will allow you to have better insights into your deployment, but will also alert you to any suspicious errors that occur. The easiest way to get this working is to use [Errbit-PHP](https://github.com/flippa/errbit-php).
 
 ##### Restrict Sensitive Folders
-Deployments often involve pulling a Github repository down and symlinking sensitive configuration folders into their expected locations. Since WordPress does not have any notion of a public folder, Capistrano or some hosts may end up symlinking these sensitive folders into a publiclially accessible location. Ensure that you cannot access these folders and also make sure that any `.git` folders are restricted as well. 
+Deployments often involve pulling a Github repository down and symlinking sensitive configuration folders into their expected locations. Since WordPress does not have any notion of a public folder, Capistrano or some hosts may end up symlinking these sensitive folders into a publicly accessible location. Ensure that you cannot access these folders and also make sure that any `.git` folders are restricted as well. 
 
 ##### Enforce Password Strength
 This seems like a basic one, but weak passwords are often the easiest way for malicious users to gain access to your site. Using a plugin like [Force Strong Passwords](https://wordpress.org/plugins/force-strong-passwords/) will help avoid a situation where a user uses a weak password like "_password123_". 

@@ -1,0 +1,256 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
+body{
+  color:#444;
+  font-family:Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman',
+              "Hiragino Sans GB", "STXihei", "微软雅黑", serif;
+  font-size:12px;
+  line-height:1.5em;
+  background:#fefefe;
+  width: 45em;
+  margin: 10px auto;
+  padding: 1em;
+  outline: 1300px solid #FAFAFA;
+}
+
+a{ color: #0645ad; text-decoration:none;}
+a:visited{ color: #0b0080; }
+a:hover{ color: #06e; }
+a:active{ color:#faa700; }
+a:focus{ outline: thin dotted; }
+a:hover, a:active{ outline: 0; }
+
+span.backtick {
+  border:1px solid #EAEAEA;
+  border-radius:3px;
+  background:#F8F8F8;
+  padding:0 3px 0 3px;
+}
+
+::-moz-selection{background:rgba(255,255,0,0.3);color:#000}
+::selection{background:rgba(255,255,0,0.3);color:#000}
+
+a::-moz-selection{background:rgba(255,255,0,0.3);color:#0645ad}
+a::selection{background:rgba(255,255,0,0.3);color:#0645ad}
+
+p{
+margin:1em 0;
+}
+
+img{
+max-width:100%;
+}
+
+h1,h2,h3,h4,h5,h6{
+font-weight:normal;
+color:#111;
+line-height:1em;
+}
+h4,h5,h6{ font-weight: bold; }
+h1{ font-size:2.5em; }
+h2{ font-size:2em; border-bottom:1px solid silver; padding-bottom: 5px; }
+h3{ font-size:1.5em; }
+h4{ font-size:1.2em; }
+h5{ font-size:1em; }
+h6{ font-size:0.9em; }
+
+blockquote{
+color:#666666;
+margin:0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
+
+
+pre , code, kbd, samp { 
+  color: #000; 
+  font-family: monospace; 
+  font-size: 0.88em; 
+  border-radius:3px;
+  background-color: #F8F8F8;
+  border: 1px solid #CCC; 
+}
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; padding: 5px 12px;}
+pre code { border: 0px !important; padding: 0;}
+code { padding: 0 3px 0 3px; }
+
+b, strong { font-weight: bold; }
+
+dfn { font-style: italic; }
+
+ins { background: #ff9; color: #000; text-decoration: none; }
+
+mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+ul, ol { margin: 1em 0; padding: 0 0 0 2em; }
+li p:last-child { margin:0 }
+dd { margin: 0 0 0 2em; }
+
+img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+td { vertical-align: top; }
+
+@media only screen and (min-width: 480px) {
+body{font-size:14px;}
+}
+
+@media only screen and (min-width: 768px) {
+body{font-size:16px;}
+}
+
+@media print {
+  * { background: transparent !important; color: black !important; filter:none !important; -ms-filter: none !important; }
+  body{font-size:12pt; max-width:100%; outline:none;}
+  a, a:visited { text-decoration: underline; }
+  hr { height: 1px; border:0; border-bottom:1px solid black; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+  pre, blockquote { border: 1px solid #999; padding-right: 1em; page-break-inside: avoid; }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page :left { margin: 15mm 20mm 15mm 10mm; }
+  @page :right { margin: 15mm 10mm 15mm 20mm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+</style><title>2014-11-13-Securing-WordPress</title></head><body><p><em>Authored by <a href="https://github.com/Emerson">Emerson Lackey</a> and <a href="https://github.com/billxinli">Bill Li</a>, feel free to add your thoughts over at <a href="https://github.com/twg/BlogPosts/blob/master/2014-11-13-Securing-WordPress.md">Github</a></em></p>
+<p><em><strong>Note:</strong> The target audience for this article is someone that is comfortable with Linux, WordPress, and does not want to rely on plugins to manage security.</em></p>
+<p>Due to it's popularity and the poor quality of many plugins and themes, WordPress has become a common and easy target for malicious users. We have learned some of these lessons first hand and felt it would be worth sharing our findings with the community.</p>
+<h1 id="lockdown-the-basics">LockDown - The Basics</h1>
+<h5 id="disable-file-modifications">Disable File Modifications</h5>
+<p>By default, WordPress admin users can edit PHP files and install any plugin they want. Giving users these abilities is often unnecessary and dangerous. One of the first things you can do is edit your wp-config.php file and add <code>define('DISALLOW_FILE_MODS', true);</code>. This will prevent users from installing plugins or editing themes, and will also hide the UI elements associated with these actions. Editing themes to add malicious code is a very common attack vector.</p>
+<h5 id="remove-unused-themes">Remove Unused Themes</h5>
+<p>There is no reason too keep unused themes around. Remove them to ensure that there is no way for malicious users to take advantage of known exploits.</p>
+<h5 id="remove-unused-plugins">Remove Unused Plugins</h5>
+<p>The same goes for plugins. Remove anything you are not using and take a few minutes to Google around for known exploits of the plugins you are using. It's worth taking a few minutes to look through the pull request history of the <a href="https://github.com/rapid7/metasploit-framework/pulls?q=is%3Apr+wordpress+is%3Aclosed">MetaSploit Github repo</a> to see if there are any known security issues.</p>
+<h5 id="setup-professional-deployments">Setup Professional Deployments</h5>
+<p>You should be able to deploy your code from the command line with a single command. We've used <a href="http://capistranorb.com/">Capistrano</a> with great success, and have more recently followed the techniques outlined in EngineYard's "<a href="https://blog.engineyard.com/2014/wordpress-in-the-cloud-part-1">WordPress in the Cloud</a>" blog posts.</p>
+<h5 id="keep-your-full-wordpress-install-in-source-control">Keep Your Full WordPress Install in Source Control</h5>
+<p>In the past we used to only keep our themes in version control. After having a few bad experiences, we now version the entire WordPress install, which includes plugins and themes. This way, if a site is ever compromised or you suspect a malicious user has somehow edited core WordPress files, a simple one-line deploy will reset everything back to how it should be. This also gives the developer full control over the plugins used on the site, allowing you to keep them up-to-date as needed.</p>
+<h5 id="errbit">Errbit</h5>
+<p>Malicious attacks on your WordPress install will often generate errors. Using <a href="https://airbrake.io/">Airbrake</a> or <a href="https://github.com/errbit/errbit">Errbit</a> to catch errors will allow you to have better insights into your deployment, but will also alert you to any suspicious errors that occur. The easiest way to get this working is to use <a href="https://github.com/flippa/errbit-php">Errbit-PHP</a>.</p>
+<h5 id="restrict-sensitive-folders">Restrict Sensitive Folders</h5>
+<p>Deployments often involve pulling a Github repository down and symlinking sensitive configuration folders into their expected locations. Since WordPress does not have any notion of a public folder, Capistrano or some hosts may end up symlinking these sensitive folders into a publiclially accessible location. Ensure that you cannot access these folders and also make sure that any <code>.git</code> folders are restricted as well. </p>
+<h5 id="enforce-password-strength">Enforce Password Strength</h5>
+<p>This seems like a basic one, but weak passwords are often the easiest way for malicious users to gain access to your site. Using a plugin like <a href="https://wordpress.org/plugins/force-strong-passwords/">Force Strong Passwords</a> will help avoid a situation where a user uses a weak password like "<em>password123</em>". </p>
+<h5 id="fail2ban">Fail2Ban</h5>
+<p>Another great method to stop brute force attacks on your site is to add <a href="https://github.com/fail2ban/fail2ban">Fail2Ban</a>, which temporarily firewalls IP addresses that make a concurrent number of similar requests. Fail2Ban is often setup to monitor your <code>access.log</code> file, which contains important information about the requests being made to your application. For example:</p>
+<ul>
+<li>A successful login occurs when we see a <code>POST</code> request to <code>wp-login.php</code> with a status code of <code>302</code></li>
+<li>A failed login occurs when we see a <code>POST</code> request to <code>wp-login.php</code> with a status code of <code>200</code>. If we notice the same IP making hundreds of failed login requests, we should probably ban them.</li>
+</ul>
+<p>To get started, you'll need to:</p>
+<ol>
+<li>Install Fail2Ban on your *nix install</li>
+<li>Install iptables if your version of *nix does not come with it installed by default</li>
+<li>Configure a Fail2Ban filter to find clusters of failed login requests</li>
+<li>Configure a jail action to handle the ban</li>
+<li>Test the setup</li>
+</ol>
+<p>In our case, we used <a href="http://nginx.org/">Nginx</a> and Gentoo <em>(EngineYard's default linux distro)</em> to host our WordPress site and took the following steps:</p>
+<p><strong>1. Install Fail2Ban and iptables via <code>emerge</code></strong></p>
+<pre><code># If you're not using Gentoo, you probably install with apt-get or yum
+sudo emerge --ask net-analyzer/fail2ban
+sudo emerge --ask iptables
+</code></pre>
+<p><strong>2. Add regex that matches failed logins to <code>/etc/fail2ban/filter.d/wordpress.conf</code></strong></p>
+<pre><code>[Definition]
+failregex = &lt;HOST&gt;.*POST.*(wp-login\.php).* 200
+ignoreregex =
+</code></pre>
+<p><strong>3. Append a jail configuration to <code>/etc/fail2ban/jail.conf</code></strong></p>
+<pre><code>[wordpress]
+enabled = true
+filter = wordpress
+action = iptables-multiport[name=NoAuthFailures, port="http,https"]
+logpath = /path/to/wordpress/access.log
+bantime = 120 (This is in seconds)
+maxretry = 10 (Number of retries allowed)
+</code></pre>
+<p><strong>4. Perform a test with the filter file</strong></p>
+<p>In this step we will check to see if everything is configured correctly using Fail2Ban's built in test:</p>
+<pre><code>fail2ban-regex /path/to/wordpress/access.log /etc/fail2ban/filter.d/wordpress.conf
+</code></pre>
+<p>The output of this command gives you a breakdown of how your Fail2Ban configuration would work. In our example we saw something like this:</p>
+<pre><code>Running tests
+=============
+
+Use regex file : /etc/fail2ban/filter.d/wordpress.conf
+Use log file   : /path/to/wordpress/access.log
+
+
+Results
+=======
+
+Failregex
+|- Regular expressions:
+|  [1] &lt;HOST&gt;.*POST.*(wp-login\.php).* 200
+|
+`- Number of matches:
+   [1] 7 match(es)
+
+Ignoreregex
+|- Regular expressions:
+|
+`- Number of matches:
+
+Summary
+=======
+
+Addresses found:
+[1]
+    165.x.x.x (Thu Nov 27 03:11:43 2014)
+    165.x.x.x (Thu Nov 27 03:20:09 2014)
+    192.x.x.x (Thu Nov 27 07:40:41 2014)
+    165.x.x.x (Thu Nov 27 10:00:34 2014)
+    165.x.x.x (Thu Nov 27 10:00:39 2014)
+    165.x.x.x (Thu Nov 27 11:05:46 2014)
+    165.x.x.x (Thu Nov 27 11:05:57 2014)
+
+Date template hits:
+0 hit(s): MONTH Day Hour:Minute:Second
+0 hit(s): WEEKDAY MONTH Day Hour:Minute:Second Year
+0 hit(s): WEEKDAY MONTH Day Hour:Minute:Second
+0 hit(s): Year/Month/Day Hour:Minute:Second
+0 hit(s): Day/Month/Year Hour:Minute:Second
+0 hit(s): Day/Month/Year Hour:Minute:Second
+22681 hit(s): Day/MONTH/Year:Hour:Minute:Second
+0 hit(s): Month/Day/Year:Hour:Minute:Second
+0 hit(s): Year-Month-Day Hour:Minute:Second
+0 hit(s): Year.Month.Day Hour:Minute:Second
+0 hit(s): Day-MONTH-Year Hour:Minute:Second[.Millisecond]
+0 hit(s): Day-Month-Year Hour:Minute:Second
+0 hit(s): TAI64N
+0 hit(s): Epoch
+0 hit(s): ISO 8601
+0 hit(s): Hour:Minute:Second
+0 hit(s): &lt;Month/Day/Year@Hour:Minute:Second&gt;
+
+Success, the total number of match is 7
+</code></pre>
+<p><strong>5. Start Fail2Ban</strong></p>
+<p>Once you've confirmed that everything is setup, you need to actually start the Fail2Ban daemon.</p>
+<pre><code>sudo /etc/init.d/fail2ban
+
+or
+
+sudo service fail2ban restart
+</code></pre>
+<p><strong>6. Monitor Fail2Ban logs and real testing</strong></p>
+<p>Fail2Ban logs all banning and unbanning of IPs in <code>/var/log/fail2ban.log</code>. We simulated a brute force attack, by logging in ten times with the wrong username and password.</p>
+<p>Our Fail2Ban daemon logged the following results:</p>
+<pre><code>2014-11-26 22:10:01,782 fail2ban.server : INFO   Changed logging target to /var/log/fail2ban.log for Fail2ban v0.8.6
+2014-11-26 22:10:02,373 fail2ban.filter : INFO   Log rotation detected for /path/to/wordpress/access.log
+2014-11-26 22:10:07,379 fail2ban.filter : INFO   Log rotation detected for /path/to/wordpress/access.log
+2014-11-27 12:08:53,992 fail2ban.actions: WARNING [wordpress] Ban our.ip.here.!
+2014-11-27 12:10:54,191 fail2ban.actions: WARNING [wordpress] Unban our.ip.here.! 
+... snip ...
+</code></pre>
+<p>We were banned for a total of two minutes.</p></body></html>
